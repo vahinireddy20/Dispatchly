@@ -1,5 +1,5 @@
 🚀 Dispatchly
-A Microservices-Based Smart Notification Engine-
+A Microservices-Based Smart Notification Platform
 Node.js • Express • PostgreSQL • React • Worker/Dispatcher
 
 <p align="center">
@@ -8,16 +8,49 @@ Node.js • Express • PostgreSQL • React • Worker/Dispatcher
   <img alt="Stack" src="https://img.shields.io/badge/stack-nodejs%20%7C%20react%20%7C%20postgres-blue" />
 </p>
 
-🔖 What is Dispatchly?
-Dispatchly is a compact, real-world notification system built as microservices. It accepts notification requests (email / SMS / push mock), queues them, and a dispatcher worker processes deliveries with retry logic. The project demonstrates microservice architecture, worker-based dispatching, and a simple admin UI for sending and tracking notifications.
+🔖 Overview
 
-✨ Features (Built / Demo)
-- User service: register / login / list users (JWT + bcrypt)
-- Notification service: `POST /notify` to queue notifications
-- Dispatcher worker: polls queued notifications, performs mock delivery, retry logic
-- User preferences (email/sms/push toggles)
-- React admin: login, select user, send notification, view logs
-- All services use PostgreSQL (single DB for simplicity in demo)
-- Clear README, sample curl tests, and resume-ready bullets
+Dispatchly is a simulation style notification engine built using a microservices architecture.  
+It accepts notification requests (email / SMS / push mock), stores them in a queue and a background dispatcher worker processes and delivers them with retry logic.
 
-📁 Repo Structure
+It includes:
+- A **User Service** (login + register + list users)
+- A **Notification Service** (accepts notifications and queues them)
+- A **Dispatcher Worker** (fetches queued notifications and sends mock deliveries)
+- A **React Admin Dashboard** to send notifications & view logs
+
+## ✨ Features
+
+### **Backend**
+- Microservice-based architecture
+- User registration & login (JWT + bcrypt)
+- Notification queuing system
+- Dispatcher Worker for message delivery
+- Retry mechanism for failed notifications
+- PostgreSQL as central database
+- REST APIs with clean structure
+- Mock delivery (no cost for SMS & email)
+
+### **Frontend**
+- React Admin Dashboard
+- Login screen
+- User dropdown for selecting target
+- Notification sender UI
+- Notifications log table
+
+## 🏗 Architecture Diagram
+┌──────────────────┐    ┌────────────────────┐
+│ React Admin UI   |───►| Notification API   │───► stores notification (queued)
+└──────────────────┘    └────────────────────┘
+        │ 
+        │ GET users / reads users
+        ▼ 
+┌──────────────┐ ┌───────────────┐
+│ User Service │ │ PostgreSQL DB │
+└──────────────┘ └───────────────┘
+        ▲
+        │ poll queued notifications
+        │
+┌────────────────────┐
+│ Dispatcher Worker  │───► mock email/SMS push
+└────────────────────┘
