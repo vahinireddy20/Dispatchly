@@ -8,8 +8,6 @@ _Node.js • Express • PostgreSQL • React • Worker/Dispatcher_
   <img alt="Stack" src="https://img.shields.io/badge/stack-nodejs%20%7C%20react%20%7C%20postgres-blue" />
 </p>
 
----
-
 ## 🔖 Overview
 
 **Dispatchly** is a real-world style **notification engine** built using a **microservices architecture**.  
@@ -22,8 +20,6 @@ It includes:
 - A **React Admin Dashboard** to send notifications & view logs
 
 This project demonstrates strong backend fundamentals, real architecture patterns, and end-to-end full-stack integration.
-
----
 
 ## ✨ Features
 
@@ -44,23 +40,4 @@ This project demonstrates strong backend fundamentals, real architecture pattern
 - Notification sender UI
 - Notifications log table
 
----
-
-## 🏗 Architecture Diagram
-┌──────────────────┐ ┌────────────────────┐
-│ React Admin UI │──────► │ Notification API │───► stores notification (queued)
-└──────────────────┘ └────────────────────┘
-│ │
-│ GET users │ reads users
-▼ ▼
-┌──────────────┐ ┌───────────────┐
-│ User Service │ │ PostgreSQL DB │
-└──────────────┘ └───────────────┘
-▲
-│ poll queued notifications
-┌────────────────────┐
-│ Dispatcher Worker │───► mock email/SMS push
-└────────────────────┘
-
-## 🏗 Architecture Diagram
 
