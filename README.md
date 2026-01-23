@@ -1,140 +1,186 @@
-# 🚀 Dispatchly
-**A Microservices-Based Smart Notification Platform**  
-_Node.js • Express • PostgreSQL • React • Worker/Dispatcher_
+Backend – User Management & Notification System
+Overview
 
-<p align="center">
-  <img alt="Dispatchly" src="https://img.shields.io/badge/Dispatchly-Notify%20Smartly-blue?logo=github" />
-  <img alt="Architecture" src="https://img.shields.io/badge/architecture-microservices-lightgrey" />
-  <img alt="Stack" src="https://img.shields.io/badge/stack-nodejs%20%7C%20react%20%7C%20postgres-blue" />
-</p>
+This project is a Node.js backend built with Express, PostgreSQL, Prisma, and Firebase Authentication.
+It provides user management and notification APIs with a clean, modular structure.
 
-## 📌 Overview
+The backend follows a modular monolith architecture, keeping everything in a single repo and deployment while maintaining clear separation of concerns.
 
-**Dispatchly** is a microservices-based **notification engine** that allows an admin to send notifications (email / SMS / push mock) to users.  
-Notifications are **queued**, and a background **dispatcher worker** processes and “sends” them with retry logic.
+Tech Stack
 
-This project mimics real-world notification systems used by companies like **Swiggy, Amazon, Ola, and banking apps** — perfect for learning microservices and showcasing backend skills on a resume.
+Node.js + Express
+
+PostgreSQL
+
+Prisma ORM
+
+Firebase Authentication
+
+Swagger (OpenAPI)
+
+Vercel (deployment)
+
+Architecture
+
+Modular Monolith
+
+Single codebase
+
+Single database
+
+Domain-based modules (auth, user, notification)
+
+Easy to maintain and scale
+
+High-level flow:
+
+Client → Express API → Firebase Auth → Controllers → Services → Prisma → PostgreSQL
+
+Features
+Authentication (Firebase)
+
+Firebase email/password authentication
+
+Firebase token verification on backend
+
+Secure protected routes
+
+No password handling in backend
+
+User Management
+
+Store user profile data in PostgreSQL
+
+Get current user profile
+
+Update user profile
+
+Role support (USER, ADMIN)
+
+Notification System
+
+Create notifications for users
+
+Fetch user notifications
+
+Mark notifications as read
+
+Notification types (SYSTEM, USER, SECURITY)
+
+API Documentation
+
+Swagger UI for API testing
+
+Auth-enabled endpoints
+
+Clear request and response schemas
+
+Project Structure
+src/
+ ├─ config/
+ │   ├─ prisma.js
+ │   ├─ firebase.js
+ │
+ ├─ modules/
+ │   ├─ auth/
+ │   ├─ user/
+ │   └─ notification/
+ │
+ ├─ middlewares/
+ │   └─ auth.middleware.js
+ │
+ ├─ docs/
+ │   └─ swagger.js
+ │
+ ├─ app.js
+ └─ server.js
+
+Authentication Flow (Firebase)
+
+User authenticates using Firebase (frontend)
+
+Frontend sends Firebase ID token to backend
+
+Backend verifies token using Firebase Admin SDK
+
+User info is attached to request
+
+Protected route logic executes
+
+The backend does not handle passwords directly.
+
+API Design
+
+RESTful endpoints
+
+JSON request/response
+
+Consistent response format
+
+Proper HTTP status codes
+
+Example endpoints:
+
+GET  /users/me
+PATCH /users/me
+GET  /notifications
+PATCH /notifications/:id/read
+
+Database
+
+PostgreSQL with Prisma ORM
+
+Users stored with Firebase UID as reference
+
+One-to-many relationship between users and notifications
+
+Error Handling
+
+Centralized error middleware
+
+Consistent error responses
+
+No business logic in routes
+
+Environment Variables
+DATABASE_URL=
+FIREBASE_PROJECT_ID=
+FIREBASE_CLIENT_EMAIL=
+FIREBASE_PRIVATE_KEY=
 
 
-## ✨ Features
+Secrets are never committed to the repository.
 
-### 🟦 Backend
-- Microservices architecture  
-- User registration, login (JWT), and list users  
-- Notification queueing system  
-- Dispatcher worker (polling) with retry logic  
-- Mock email/SMS/push delivery (no cost)  
-- PostgreSQL database  
-- Clean REST APIs  
+Deployment
 
-### 🟩 Frontend
-- React Admin Dashboard  
-- Login page  
-- Send Notification page  
-- Notification Logs page  
+Deployed on Vercel
 
-### 🟧 Architecture
-- 3 services:
-  - **User Service**
-  - **Notification Service**
-  - **Dispatcher Worker**
-- React client  
-- Shared Postgres DB (for simplicity)
+Uses managed PostgreSQL (Neon / Supabase)
 
----
+Prisma migrations run before deployment
 
-## 🏗 Architecture Diagram
+Design Principles
 
-```
+Separation of concerns
 
-┌──────────────────┐        ┌────────────────────┐
-│  React Admin UI  │──────► │ Notification API    │───► stores notification (queued)
-└──────────────────┘        └────────────────────┘
-│                           │
-│ GET users                 │ reads users
-▼                           ▼
-┌──────────────┐            ┌───────────────┐
-│ User Service │            │ PostgreSQL DB │
-└──────────────┘            └───────────────┘
-▲
-│ poll queued notifications
-┌────────────────────┐
-│ Dispatcher Worker  │───► mock email/SMS/push
-└────────────────────┘
+Thin routes, fat services
 
-```
+No business logic in routes
 
-## 📁 Project Structure
+Modular and readable code
 
-dispatchly/
-user-service/
-notification-service/
-dispatcher-service/
-client/
-README.md
+Production-focused, not over-engineered
 
-````
+Summary
 
-## 🗄 Database Schema (PostgreSQL)
+This backend is designed to be:
 
-```sql
-CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(100),
-  email VARCHAR(150) UNIQUE,
-  phone VARCHAR(20),
-  password TEXT,
-  created_at TIMESTAMP DEFAULT now()
-);
+Simple
 
-CREATE TABLE preferences (
-  id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES users(id) ON DELETE CASCADE,
-  email_enabled BOOLEAN DEFAULT TRUE,
-  sms_enabled BOOLEAN DEFAULT FALSE,
-  push_enabled BOOLEAN DEFAULT FALSE
-);
+Secure
 
-CREATE TABLE notifications (
-  id SERIAL PRIMARY KEY,
-  user_id INT,
-  message TEXT,
-  channel VARCHAR(20),
-  status VARCHAR(20) DEFAULT 'queued',
-  attempts INT DEFAULT 0,
-  last_error TEXT,
-  created_at TIMESTAMP DEFAULT now(),
-  sent_at TIMESTAMP
-);
-````
+Maintainable
 
-## 🔌 API Endpoints
+Real-world ready
 
-### **User Service** 
-
-| Method | Endpoint          | Description |
-| ------ | ----------------- | ----------- |
-| POST   | `/users/register` | Create user |
-| POST   | `/users/login`    | Login & JWT |
-| GET    | `/users`          | List users  |
-
----
-
-### **Notification Service** 
-
-| Method | Endpoint         | Description        |
-| ------ | ---------------- | ------------------ |
-| POST   | `/notify`        | Queue notification |
-| GET    | `/notifications` | List notifications |
-
----
-
-## 🧠 Concepts Demonstrated
-
-* Microservices architecture
-* JWT authentication
-* Queueing + background workers
-* Retry mechanism
-* PostgreSQL relational modelling
-* RESTful API design
-* React frontend integration
+It focuses on clarity and correctness, avoiding unnecessary complexity while following industry best practices.
