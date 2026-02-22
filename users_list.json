@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "email": "user1@dispatchly.com",
+    "phone": null,
+    "password": "$2b$10$fX5jlyGEVhO/DvAjaSuN5u/h2NjU1rTVx..Ja17.IQy8GJLrjAKiS",
+    "role": 0,
+    "isActive": true,
+    "otp": null,
+    "otpExpiry": null,
+    "createdAt": "2026-01-25T21:39:47.667Z",
+    "updatedAt": "2026-01-25T21:39:47.667Z"
+  },
+  {
+    "id": 2,
+    "email": "string",
+    "phone": null,
+    "password": "$2b$10$QcY64cl0zTQq1BVKvP4CIeMOq4ArLCOt.GSuY19rNSSe5IicT84Yi",
+    "role": 0,
+    "isActive": true,
+    "otp": null,
+    "otpExpiry": null,
+    "createdAt": "2026-01-25T21:44:57.179Z",
+    "updatedAt": "2026-01-25T21:44:57.179Z"
+  },
+  {
+    "id": 3,
+    "email": "test@dispatchly.com",
+    "phone": null,
+    "password": "$2b$10$2l9ZHHM/lJry4zo.gW03bODDGLhWlAWODOB0EjFoO69kd2WrxeTJm",
+    "role": 0,
+    "isActive": true,
+    "otp": null,
+    "otpExpiry": null,
+    "createdAt": "2026-01-26T11:39:37.423Z",
+    "updatedAt": "2026-01-26T11:39:37.423Z"
+  },
+  {
+    "id": 4,
+    "email": "example@gmail.com",
+    "phone": null,
+    "password": "$2b$10$MXgYpjVQQYBKS8ZxrX5VQu8Wao0lC7bnzY0zTV33YcE.tjSSIfk06",
+    "role": 0,
+    "isActive": true,
+    "otp": null,
+    "otpExpiry": null,
+    "createdAt": "2026-01-27T19:44:56.909Z",
+    "updatedAt": "2026-01-27T19:44:56.909Z"
+  },
+  {
+    "id": 5,
+    "email": "vah@gmail.c",
+    "phone": null,
+    "password": "$2b$10$obhrPSrPhCJLY2nhD28Pze5gs01lmySGZrE.9mlmDa53ccXp1SVuS",
+    "role": 0,
+    "isActive": true,
+    "otp": null,
+    "otpExpiry": null,
+    "createdAt": "2026-02-21T21:14:02.694Z",
+    "updatedAt": "2026-02-21T21:14:02.694Z"
+  },
+  {
+    "id": 6,
+    "email": "user@example.com",
+    "phone": null,
+    "password": "$2b$10$xYVTDDIUBJ93kFymuMWVcuhmbxc.4ZKQwpPXBELqWnkC48IgaDZiG",
+    "role": 0,
+    "isActive": true,
+    "otp": null,
+    "otpExpiry": null,
+    "createdAt": "2026-02-21T21:21:27.129Z",
+    "updatedAt": "2026-02-21T21:22:43.872Z"
+  },
+  {
+    "id": 7,
+    "email": "vah@gmail.com",
+    "phone": null,
+    "password": "$2b$10$Xp51tfAJmSvaDmRoqi390uaACdhpxMxhVSo687o4VHyIH/y5IwGxm",
+    "role": 0,
+    "isActive": true,
+    "otp": null,
+    "otpExpiry": null,
+    "createdAt": "2026-02-21T21:44:50.493Z",
+    "updatedAt": "2026-02-21T21:45:14.555Z"
+  }
+]

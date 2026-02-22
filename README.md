@@ -1,181 +1,85 @@
-🚀 Backend – User Management & Notification System
-📌 Overview
-
-This project is a Node.js backend built with Express, PostgreSQL, Prisma, and Firebase Authentication.
-
-It provides user management and notification APIs using a clean, modular monolith architecture, keeping everything in a single repository and deployment while maintaining clear separation of concerns.
-
-🛠 Tech Stack
-
-Node.js + Express
-
-PostgreSQL
-
-Prisma ORM
-
-Firebase Authentication
-
-Swagger (OpenAPI)
-
-Vercel (Deployment)
-
-🧱 Architecture
-
-Modular Monolith
-
-Single codebase
-
-Single database
-
-Domain-based modules (auth, user, notification)
-
-Easy to maintain and scale
-
-High-level Flow
-Client → Express API → Firebase Auth → Controllers → Services → Prisma → PostgreSQL
-
-✨ Features
-🔐 Authentication (Firebase)
-
-Firebase email/password authentication
-
-Firebase ID token verification on backend
-
-Secure protected routes
-
-No password handling in backend
-
-👤 User Management
-
-Store user profile data in PostgreSQL
-
-Get current user profile
-
-Update user profile
-
-Role support (USER, ADMIN)
-
-🔔 Notification System
-
-Create notifications for users
-
-Fetch user notifications
-
-Mark notifications as read
-
-Notification types:
-
-SYSTEM
-
-USER
-
-SECURITY
-
-📘 API Documentation
-
-Swagger UI for API testing
-
-Auth-enabled endpoints
-
-Clear request and response schemas
-
-📁 Project Structure
-src/
- ├─ config/
- │   ├─ prisma.js
- │   ├─ firebase.js
- │
- ├─ modules/
- │   ├─ auth/
- │   ├─ user/
- │   └─ notification/
- │
- ├─ middlewares/
- │   └─ auth.middleware.js
- │
- ├─ docs/
- │   └─ swagger.js
- │
- ├─ app.js
- └─ server.js
-
-🔑 Authentication Flow (Firebase)
-
-User authenticates using Firebase (frontend)
-
-Frontend sends Firebase ID token to backend
-
-Backend verifies token using Firebase Admin SDK
-
-User information is attached to the request
-
-Protected route logic executes
-
-✅ The backend does not handle passwords directly
-
-🌐 API Design
-
-RESTful endpoints
-
-JSON request/response format
-
-Consistent response structure
-
-Proper HTTP status codes
-
-🗄 Database
-
-PostgreSQL with Prisma ORM
-
-Users stored using Firebase UID as reference
-
-One-to-many relationship between users and notifications
-
-⚠️ Error Handling
-
-Centralized error middleware
-
-Consistent error responses
-
-No business logic in routes
-
-🔐 Environment Variables
-DATABASE_URL=
-FIREBASE_PROJECT_ID=
-FIREBASE_CLIENT_EMAIL=
-FIREBASE_PRIVATE_KEY=
-
-
-Secrets are never committed to the repository.
-
-🚀 Deployment
-
-Deployed on Vercel
-
-Uses managed PostgreSQL
-
-🎯 Design Principles
-
-Separation of concerns
-
-Thin routes, fat services
-
-No business logic in routes
-
-Modular and readable code
-
-Production-focused, not over-engineered
-
-✅ Summary
-
-This backend is designed to be:
-
-Simple
-
-Secure
-
-Maintainable
-
-Real-world ready
-
-It focuses on clarity and correctness, avoiding unnecessary complexity while following industry best practices.
+# 🚀 Dispatchly – Backend (User Management & Notification System)
+
+Dispatchly is a focused backend system designed for streamlined task management and workforce communication. It allows admins to manage users, assign tasks, and verify identities through a specialized OTP-based login system for staff and a password-based system for admins.
+
+## ✨ Key Features
+
+### 🔐 Multi-Role Authentication
+-   **Admins**: Secure login via Phone Number and Password. Full control over task creation and user management.
+-   **Staff/Users**: Instant "Login or Register" using only their Phone Number and a 6-digit OTP (sent via Email/Nodemailer).
+-   **Smart Recognition**: The system automatically detects if a number belongs to an admin or a staff member to show the correct login type.
+
+### 📋 Task Dispatching
+-   **Creation**: Admins can create tasks and assign them to specific staff members by their Name/ID.
+-   **Tracking**: Users can view their assigned tasks and update statuses in real-time.
+-   **Admin Overview**: Admins have a global view of all tasks across the organization.
+
+### 📧 Notification System
+-   **Nodemailer Integration**: Automated OTP delivery via SMTP.
+-   **Development Mode**: Automatic fallback to Ethereal Mail with preview links in the terminal if SMTP is not configured.
+
+## 🛠 Tech Stack
+-   **Runtime**: Node.js with TypeScript
+-   **Framework**: Express.js
+-   **ORM**: Prisma
+-   **Database**: PostgreSQL
+-   **Auth**: JSON Web Tokens (JWT) & Bcrypt
+-   **Docs**: Swagger (OpenAPI 3.0)
+
+---
+
+## 🚀 Getting Started
+
+### 1. Installation
+```bash
+npm install
+```
+
+### 2. Environment Setup
+Create a `.env` file in the root directory:
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/dispatchly"
+JWT_SECRET="your-super-secret-key"
+PORT=3000
+
+# Email Configuration (Optional for Dev, required for Production)
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT=587
+SMTP_USER="your-email@gmail.com"
+SMTP_PASS="your-app-password"
+```
+
+### 3. Database Migration
+```bash
+npx prisma migrate dev
+```
+
+### 4. Admin Seeding
+To set up your initial admin user (`+918919524686`):
+```bash
+npx ts-node seed_admin.ts
+```
+
+### 5. Start Development Server
+```bash
+npm run dev
+```
+
+---
+
+## 📖 API Documentation
+Once the server is running, access the interactive Swagger documentation at:
+👉 [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
+
+### Core Endpoints:
+-   `POST /api/auth/request-otp`: Start login for staff (sends OTP) or trigger admin password prompt.
+-   `POST /api/auth/verify-otp`: Exchange OTP for a JWT token (includes user onboarding).
+-   `POST /api/auth/login`: Direct password login for Admins.
+-   `GET /api/tasks`: Retrieve tasks (scoped by role).
+-   `POST /api/tasks`: Create tasks (Admin only).
+
+## 🗄 Project Structure
+-   `src/modules/auth`: Authentication logic, types, and routes.
+-   `src/modules/tasks`: Task management CRUD operations.
+-   `src/common/utils`: Shared utilities (JWT, Hashing, Nodemailer).
+-   `prisma/schema.prisma`: Database models (User, Task).

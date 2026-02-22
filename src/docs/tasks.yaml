@@ -1,0 +1,65 @@
+paths:
+  /tasks:
+    get:
+      summary: Get all tasks
+      tags: [Tasks]
+      security:
+        - BearerAuth: []
+      responses:
+        200:
+          description: List of tasks
+    post:
+      summary: Create a new task (Admin only)
+      tags: [Tasks]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: {type: string}
+                description: {type: string}
+                dueDate: {type: string, format: date-time}
+                assignedUserId: {type: integer}
+      responses:
+        201:
+          description: Task created
+  /tasks/{id}:
+    patch:
+      summary: Update a task
+      tags: [Tasks]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: {type: string}
+                description: {type: string}
+                status: {type: integer}
+      responses:
+        200:
+          description: Task updated
+    delete:
+      summary: Delete a task (Admin only)
+      tags: [Tasks]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer}
+      responses:
+        204:
+          description: Task deleted
