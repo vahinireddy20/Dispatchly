@@ -1,0 +1,188 @@
+openapi: 3.0.0
+info:
+  title: Dispatchly API
+  version: 1.0.0
+  description: Management & Notification System API
+
+servers:
+  - url: http://localhost:3000/api
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+tags:
+  - name: Auth
+  - name: Users
+  - name: Tasks
+
+paths:
+  /auth/request-otp:
+    post:
+      summary: Request OTP for Login or Signup
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: {type: string, example: "user@example.com"}
+                phone: {type: string, example: "+1234567890"}
+      responses:
+        200:
+          description: OTP sent successfully or Admin detected
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: {type: string}
+                  isAdmin: {type: boolean}
+                  phone: {type: string}
+                  email: {type: string}
+
+  /auth/verify-otp:
+    post:
+      summary: Verify OTP and get login token
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [otp]
+              properties:
+                email: {type: string}
+                phone: {type: string}
+                otp: {type: string}
+      responses:
+        200: 
+          description: OTP verified
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: {type: string}
+                  userId: {type: integer}
+                  needsPassword: {type: boolean}
+
+  /auth/set-password:
+    post:
+      summary: Set password after OTP verification
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [userId, password]
+              properties:
+                userId: {type: integer}
+                password: {type: string}
+      responses:
+        200: {description: Password set successfully}
+
+  /auth/login:
+    post:
+      summary: Login with Email/Phone and Password
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [identifier, password]
+              properties:
+                identifier: {type: string, description: "Email or Phone number"}
+                password: {type: string}
+      responses:
+        200: {description: Login successful}
+
+  /users/me:
+    get:
+      summary: Get current logged in user details
+      tags: [Users]
+      security:
+        - BearerAuth: []
+      responses:
+        200: {description: User details}
+
+  /users:
+    get:
+      summary: Get all users (Admin only)
+      tags: [Users]
+      security:
+        - BearerAuth: []
+      responses:
+        200: {description: List of users}
+
+  /tasks:
+    get:
+      summary: Get all tasks (Admins see all, Users see assigned)
+      tags: [Tasks]
+      security:
+        - BearerAuth: []
+      responses:
+        200: {description: List of tasks}
+    post:
+      summary: Create a new task (Admin only)
+      tags: [Tasks]
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: {type: string}
+                description: {type: string}
+                dueDate: {type: string, format: date-time}
+                assignedUserId: {type: integer}
+      responses:
+        201: {description: Task created}
+
+  /tasks/{id}:
+    patch:
+      summary: Update a task
+      tags: [Tasks]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: {type: string}
+                description: {type: string}
+                status: {type: integer}
+      responses:
+        200: {description: Task updated}
+    delete:
+      summary: Delete a task (Admin only)
+      tags: [Tasks]
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: integer}
+      responses:
+        204: {description: Task deleted}
